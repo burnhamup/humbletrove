@@ -1,10 +1,7 @@
-// TODO cache in localstorage
-
 const loadCatalog = async () => {
   let games = {}
   let result = await chrome.storage.local.get(['catalog']);
   let cachedObject = result.catalog;
-  debugger;
   if (!cachedObject || new Date().getTime() < cachedObject.expiry) {
     games = cachedObject.data;
   } else {
@@ -32,6 +29,20 @@ const fetchCatalog = async () => {
     })
   }
   return games;
+}
+
+const checkSubscriptionStatus = async () => {
+  let response = await fetch(`https://www.humblebundle.com/client/user`);
+  if (response.status == 401) {
+    // TODO this means the user isn't logged in.
+    // That's different than not being subscribed.
+    // This method could do much more 
+    return false;
+  }
+  if (response.status == 200) {
+    let data = await response.json();
+    return data.has_perks;
+  }
 }
 
 const renderGames = (games) => {
@@ -83,16 +94,18 @@ const download = async (machine_name, filename) => {
   });
 }
 
-
-document.getElementById("fetch-data").addEventListener("click", async () => {
+const startup = async () => {
   const catalogList = document.getElementById("catalog-list");
   catalogList.innerHTML = "<li>Loading...</li>";
   try {
+    let hasAccess = await checkSubscriptionStatus();
+    const accessDiv = document.getElementById('subscription-status');
+    accessDiv.innerHTML = hasAccess ? 'Active Subscription' : 'Not active (or logged out)';
     loadCatalog();
   } catch (error) {
     catalogList.innerHTML = `<li>Error: ${error.message}</li>`;
   }
-});
+}
 
 document.getElementById("catalog-list").addEventListener("click", async (event) => {
   // TODO
@@ -103,4 +116,5 @@ document.getElementById("catalog-list").addEventListener("click", async (event) 
     await download(machinename, filename);
   }
 })
-  
+
+document.addEventListener("DOMContentLoaded", startup);
