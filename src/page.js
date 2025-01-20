@@ -58,7 +58,7 @@ const renderGame = (game) => {
     image: game.image,
     downloads: Object.entries(game.downloads).map(([platform, data]) => {
       return {
-        platform: platform,
+        platform: `${platform} - ${data.size}`,
         filename: data.url.web,
         machine_name: data.machine_name,
       }
