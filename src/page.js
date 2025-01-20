@@ -59,13 +59,13 @@ const renderGame = (game) => {
     human_name: game['human-name'],
     image: game.image,
     downloads: Object.entries(game.downloads).map(([platform, data]) => {
+      const filesize = data.size || (Math.round(data.file_size / 1024 / 1024) + " MB")
       return {
-        platform: `${platform} - ${data.size}`,
+        platform: `${platform} - ${filesize}`,
         filename: data.url.web,
         machine_name: data.machine_name,
       }
     }),
-    // TODO copy more things
   };
 
   return `
