@@ -1,5 +1,8 @@
 # humbletrove
-A browser extension to restore access to trove.
+A chrome browser extension to restore access to trove.
+
+# How to install
+I don't know. You can download the repo and sideload the unpacked extension. 
 
 # How To Use
 After installing, click the extension to open a page that shows all the games in the Humble Trove.
@@ -30,3 +33,6 @@ I also ask for storage permissions to cache the catalog of games, and the downlo
 
 ## It's kind of ugly
 Yes.
+
+## Can this work in firefox
+It can probably be made to work in Firefox. At first glance I might have to adjust the manifest. 
