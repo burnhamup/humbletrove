@@ -1,3 +1,5 @@
+let subscriptionStatus = null;
+
 const loadCatalog = async () => {
   let games = {}
   let result = await chrome.storage.local.get(['catalog']);
@@ -36,12 +38,12 @@ const checkSubscriptionStatus = async () => {
   if (response.status == 401) {
     // TODO this means the user isn't logged in.
     // That's different than not being subscribed.
-    // This method could do much more 
-    return false;
+    // This method could do much more
+    return 'logged_out';
   }
   if (response.status == 200) {
     let data = await response.json();
-    return data.has_perks;
+    return data.has_perks ? 'subscribed' : 'not_subscribed';
   }
 }
 
@@ -89,6 +91,14 @@ const download = async (machine_name, filename) => {
     }).toString(),
     credentials: "include"
   });
+  if (response.redirected) {
+    alert("You must login to download this game");
+    return;
+  }
+  if (response.status == 401) {
+    alert("You don't own or have access to this game");
+    return;
+  }
   const data = await response.json();
   const url = data.signed_url;
   chrome.downloads.download({
@@ -101,9 +111,19 @@ const startup = async () => {
   const catalogList = document.getElementById("catalog-list");
   catalogList.innerHTML = "<li>Loading...</li>";
   try {
-    let hasAccess = await checkSubscriptionStatus();
+    subscriptionStatus = await checkSubscriptionStatus();
     const accessDiv = document.getElementById('subscription-status');
-    accessDiv.innerHTML = hasAccess ? 'Active Subscription' : 'Not active (or logged out)';
+    switch (subscriptionStatus) {
+      case 'logged_out': 
+        accessDiv.innerHTML = `Status: Logged out - login to use this extension`;
+        break;
+      case 'not_subscribed':
+        accessDiv.innerHTML = `Status: Not subscribed - <a href="https://www.humblebundle.com/membership">Subscribe</a>`;
+        break;
+      case 'subscribed':
+        accessDiv.innerHTML = `Status: Active Subscription`;
+        break;
+    }
     loadCatalog();
   } catch (error) {
     catalogList.innerHTML = `<li>Error: ${error.message}</li>`;
