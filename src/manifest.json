@@ -3,7 +3,7 @@
     "name": "Humble Bundle Trove Downloader",
     "version": "1.0",
     "description": "Restores download links for games in the humble trove.",
-    "permissions": ["scripting", "downloads", "storage"],
+    "permissions": ["downloads", "storage"],
     "host_permissions": [
       "https://www.humblebundle.com/client/user",
       "https://www.humblebundle.com/api/v1/user/download/sign",
