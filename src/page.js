@@ -111,8 +111,7 @@ const startup = async () => {
 }
 
 document.getElementById("catalog-list").addEventListener("click", async (event) => {
-  // TODO
-  if (event.target.matches('button')) {
+  if (event.target.matches('.js-download')) {
     const button = event.target;
     const filename = button.getAttribute('data-filename');
     const machinename = button.getAttribute('data-machinename');
