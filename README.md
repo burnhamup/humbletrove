@@ -1,2 +1,2 @@
 # humbletrove
-A browser extension to restore access to trove
+A browser extension to restore access to trove.

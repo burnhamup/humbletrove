@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "Humble Bundle Trove Downloader",
+    "version": "1.0",
+    "description": "Restores download links for games in the humble trove.",
+    "permissions": ["cookies", "activeTab", "scripting", "downloads"],
+    "host_permissions": ["https://www.humblebundle.com/*"],
+    "action": {
+      "default_icon": {
+        "48": "bindle.png",
+        "128": "bindle.png"
+      }
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "icons": {
+      "48": "bindle.png",
+      "128": "bindle.png"
+    }
+  }
+  
