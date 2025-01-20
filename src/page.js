@@ -2,14 +2,14 @@ const loadCatalog = async () => {
   let games = {}
   let result = await chrome.storage.local.get(['catalog']);
   let cachedObject = result.catalog;
-  if (!cachedObject || new Date().getTime() < cachedObject.expiry) {
-    games = cachedObject.data;
-  } else {
+  if (!cachedObject || new Date().getTime() > cachedObject.expiry) {
     games = await fetchCatalog();
     await chrome.storage.local.set({'catalog': {
       'data': games,
       'expiry': new Date().getTime() + 7 * 24 * 60 * 60 * 1000,
     }});
+  } else {
+    games = cachedObject.data;
   }
   renderGames(games);
 }
