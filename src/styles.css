@@ -1,0 +1,18 @@
+body {
+    background-color: rgb(40, 44, 52);
+    color: rgb(227, 231, 237);
+    font-family: "Sofia Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#game-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 25px;
+}
+
+#game-list .game-name {
+    font-size: 24px;
+    text-align: center;
+}

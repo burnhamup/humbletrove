@@ -47,7 +47,7 @@ const checkSubscriptionStatus = async () => {
 
 const renderGames = (games) => {
   const catalogList = document.getElementById("catalog-list");
-  const gamesHtml = Object.values(games).map(renderGame).join('');
+  const gamesHtml = `<div id="game-list">${Object.values(games).map(renderGame).join('')}</div>`;
   catalogList.innerHTML = gamesHtml;
 }
 
@@ -55,6 +55,7 @@ const renderGame = (game) => {
    let gameDict = {
     machine_name: game.machine_name,
     human_name: game['human-name'],
+    image: game.image,
     downloads: Object.entries(game.downloads).map(([platform, data]) => {
       return {
         platform: platform,
@@ -66,11 +67,13 @@ const renderGame = (game) => {
   };
 
   return `
-    <li>${gameDict.human_name}
-    <ul>
-      ${gameDict.downloads.map(download => `<li><button class="js-download" data-filename="${download.filename}" data-machinename="${download.machine_name}">${download.platform}</button></li>`)}
-    </ul>
-    </li>
+    <div class="game-card">
+      <img src="${gameDict.image}" alt="${gameDict.human_name}" />
+      <div class="game-name">${gameDict.human_name}</div>
+      <div class="downloads">
+        ${gameDict.downloads.map(download => `<button class="js-download" data-filename="${download.filename}" data-machinename="${download.machine_name}">${download.platform}</button>`).join('')}
+      </div>
+    </div>
   `
 }
 
